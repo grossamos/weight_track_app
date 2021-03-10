@@ -1,0 +1,1 @@
+final List<String> settingsNavigationRoutesAsList = ['/settings/exercise_edit', '/settings/day_edit', '/settings/data'];
