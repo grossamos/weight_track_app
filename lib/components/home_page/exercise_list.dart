@@ -3,9 +3,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:weight_track_app/logic/exercise_calc/chart_calc.dart';
 import 'package:weight_track_app/logic/exercise_calc/exercise_format.dart';
 import 'package:weight_track_app/logic/storage/database_filtered_data.dart';
 import 'package:weight_track_app/logic/storage/database_unfiltered_data.dart';
+import 'package:weight_track_app/models/difficulty.dart';
 import 'package:weight_track_app/models/exercise.dart';
 import 'package:weight_track_app/models/exercise_instance.dart';
 import 'package:weight_track_app/navigation/main_route_constants.dart';
@@ -155,6 +157,7 @@ class _ExerciseListItemState extends State<ExerciseListItem> {
                     // TODO add table
                     showDialog(context: context,
                       builder: (BuildContext dialogueContext) => SimpleDialog(
+                        // contentPadding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 20),
                         title: Text(_exercise.name,
                           style: TextStyle(
                             fontFamily: GoogleFonts.raleway().fontFamily,
@@ -163,33 +166,34 @@ class _ExerciseListItemState extends State<ExerciseListItem> {
                           ),
                         ),
                         children: [
-                          DataTable(
-                            columnSpacing: 10,
-                              columns: [
-                            DataColumn(label: Text('Name')),
-                            DataColumn(label: Text('RPE 10')),
-                            DataColumn(label: Text('RPE 8')),
-                            DataColumn(label: Text('RPE 5')),
-                          ], rows: [
-                            DataRow(cells: [
-                              DataCell(Text('XX')),
-                              DataCell(Text('XX')),
-                              DataCell(Text('XX')),
-                              DataCell(Text('XX')),
-                            ]),
-                            DataRow(cells: [
-                              DataCell(Text('XX')),
-                              DataCell(Text('XX')),
-                              DataCell(Text('XX')),
-                              DataCell(Text('XX')),
-                            ]),
-                            DataRow(cells: [
-                              DataCell(Text('XX')),
-                              DataCell(Text('XX')),
-                              DataCell(Text('XX')),
-                              DataCell(Text('XX')),
-                            ]),
-                          ])
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            child: DataTable(
+                              columnSpacing: 10,
+                                columns: [
+                              DataColumn(label: Text('Reps')),
+                              DataColumn(label: Text('RPE 11')),
+                              DataColumn(label: Text('RPE 10')),
+                              DataColumn(label: Text('RPE 8')),
+                              DataColumn(label: Text('RPE 5')),
+                            ], rows: List.generate(30, (int repIndex) {
+                              List<DataCell> chartData = [DataCell(Text((repIndex + 1).toString()))];
+                              chartData.addAll(List.generate(possibleDifficulties.length, (int diffIndex) => DataCell(FutureBuilder(
+                                    future: DatabaseDataFiltered.getBestInstanceOfExercise(_exercise),
+                                    builder: (BuildContext cellContext, AsyncSnapshot<ExerciseInstance> exerciseSnapshot){
+                                      if (exerciseSnapshot.data == null){
+                                        return Text('0');
+                                      }
+                                      else {
+                                        return Text(ChartCalculator.getWeightForChart(repIndex + 1, possibleDifficulties[diffIndex], exerciseSnapshot.data.strengthValue).round().toString());
+                                      }
+                                    },
+                                  ))
+                                  ));
+                              return DataRow(cells: chartData);
+                            }
+                            )),
+                          ),
                         ],
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(18))),
                       )

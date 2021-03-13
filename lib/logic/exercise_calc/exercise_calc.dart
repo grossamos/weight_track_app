@@ -13,7 +13,7 @@ class ExerciseCalc{
     // big dictionary of results
     Map<int, double> mapOfRepRanges = {
       0: 1, 1: 1, 2: 0.95, 3: 0.92, 4: 0.89, 5: 0.86, 6: 0.83, 7: 0.81, 8: 0.79, 9: 0.77, 10: 0.75,
-      11: 0.73, 12: 0.71, 13: 0.7, 14: 0.68, 15: 0.67, 16: 0.65, 17: 0.64, 18: 63, 19: 62, 20:61
+      11: 0.73, 12: 0.71, 13: 0.7, 14: 0.68, 15: 0.67, 16: 0.65, 17: 0.64, 18: 0.63, 19: 0.62, 20: 0.61
     };
 
     // quadratic function stops being applicable after 24 reps

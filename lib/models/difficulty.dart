@@ -7,6 +7,8 @@ enum Difficulty{
   AboveMaximumExertion // one rep above
 }
 
+List<Difficulty> possibleDifficulties = [Difficulty.AboveMaximumExertion, Difficulty.MaximumExertion, Difficulty.MediumExertion, Difficulty.Easy];
+
 int difficultyToRepsShort(Difficulty difficulty){
   switch (difficulty){
     case Difficulty.Easy:
