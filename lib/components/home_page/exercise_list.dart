@@ -8,6 +8,7 @@ import 'package:weight_track_app/logic/storage/database_filtered_data.dart';
 import 'package:weight_track_app/logic/storage/database_unfiltered_data.dart';
 import 'package:weight_track_app/models/exercise.dart';
 import 'package:weight_track_app/models/exercise_instance.dart';
+import 'package:weight_track_app/navigation/main_route_constants.dart';
 
 import 'exercise_selection_manager.dart';
 
@@ -125,85 +126,132 @@ class _ExerciseListItemState extends State<ExerciseListItem> {
     );
     // TODO make AnimatedContainer work, to animate the expansion of a tile
     // TODO possible fix is to move the AnimatedContainer up to the List as a whole
-    return AnimatedContainer(
-      duration: Duration(seconds: 100),
-      child: Container(
-        width: double.infinity,
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 22.0),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(18),
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomLeft,
-                  colors: [
-                    // has to change when not selected
-                    _selected?Color.fromRGBO(0xA9, 0xD5, 0x87, 1):Color.fromRGBO(0xF0, 0xF0, 0xF0, 1),
-                    _selected?Color.fromRGBO(0x51, 0xC2, 0xA4, 1):Color.fromRGBO(0xF0, 0xF0, 0xF0, 1),
-                  ]
-              )
-            ),
-            // TODO remove selection animation
-            child: FlatButton(
-              padding: const EdgeInsets.all(0),
-              onPressed: (){
-                ExerciseSelectionManager.updateSelectedIndexes(_indexOfItem, _idOfDay);
-                ExerciseSelectionManager.updateListeners(_idOfDay);
-                ExerciseSelectionManager.callLastSelectedUpdater(_idOfDay);
-                ExerciseSelectionManager.setLastSelectedUpdater(() => setState((){print("Updating..");}), _idOfDay);
-                setState(() {});
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 21),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _exercise.name,
-                      style: TextStyle(
-                        fontFamily: GoogleFonts.raleway().fontFamily,
-                        fontSize: 24.0,
-                        color: _selected?Colors.white:Colors.black
+    return Hero(
+      tag: 'exercise_chart',
+      child: AnimatedContainer(
+        duration: Duration(seconds: 100),
+        child: Container(
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 22.0),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(18),
+                gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomLeft,
+                    colors: [
+                      // has to change when not selected
+                      _selected?Color.fromRGBO(0xA9, 0xD5, 0x87, 1):Color.fromRGBO(0xF0, 0xF0, 0xF0, 1),
+                      _selected?Color.fromRGBO(0x51, 0xC2, 0xA4, 1):Color.fromRGBO(0xF0, 0xF0, 0xF0, 1),
+                    ]
+                )
+              ),
+              // TODO remove selection animation
+              child: FlatButton(
+                padding: const EdgeInsets.all(0),
+                onPressed: (){
+                  if (_selected){
+                    // TODO add table
+                    showDialog(context: context,
+                      builder: (BuildContext dialogueContext) => SimpleDialog(
+                        title: Text(_exercise.name,
+                          style: TextStyle(
+                            fontFamily: GoogleFonts.raleway().fontFamily,
+                            fontSize: 36,
+                            color: Color(0xff676767)
+                          ),
+                        ),
+                        children: [
+                          DataTable(
+                            columnSpacing: 10,
+                              columns: [
+                            DataColumn(label: Text('Name')),
+                            DataColumn(label: Text('RPE 10')),
+                            DataColumn(label: Text('RPE 8')),
+                            DataColumn(label: Text('RPE 5')),
+                          ], rows: [
+                            DataRow(cells: [
+                              DataCell(Text('XX')),
+                              DataCell(Text('XX')),
+                              DataCell(Text('XX')),
+                              DataCell(Text('XX')),
+                            ]),
+                            DataRow(cells: [
+                              DataCell(Text('XX')),
+                              DataCell(Text('XX')),
+                              DataCell(Text('XX')),
+                              DataCell(Text('XX')),
+                            ]),
+                            DataRow(cells: [
+                              DataCell(Text('XX')),
+                              DataCell(Text('XX')),
+                              DataCell(Text('XX')),
+                              DataCell(Text('XX')),
+                            ]),
+                          ])
+                        ],
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(18))),
+                      )
+                    );
+                  }
+                  ExerciseSelectionManager.updateSelectedIndexes(_indexOfItem, _idOfDay);
+                  ExerciseSelectionManager.updateListeners(_idOfDay);
+                  ExerciseSelectionManager.callLastSelectedUpdater(_idOfDay);
+                  ExerciseSelectionManager.setLastSelectedUpdater(() => setState((){print("Updating..");}), _idOfDay);
+                  setState(() {});
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 21),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _exercise.name,
+                        style: TextStyle(
+                          fontFamily: GoogleFonts.raleway().fontFamily,
+                          fontSize: 24.0,
+                          color: _selected?Colors.white:Colors.black
+                        ),
                       ),
-                    ),
-                    Divider(
-                      thickness: 1.0,
-                      color: _selected?Colors.white:Colors.black,
-                    ),
-                    SizedBox(
-                      height: _selected?10.0:5.0,
-                    ),
-                    Text(
-                      "Average",
-                      style: _subtitleStyle,
-                    ),
-                    FutureBuilder(
-                      future: DatabaseDataFiltered.getRecentAverage(_exercise),
-                      builder: (BuildContext context, AsyncSnapshot<ExerciseInstance> snapshot){
-                        if (snapshot.data == null)
-                          return Text('0x0kg', style: _contentStyle);
-                        else
-                          return Text(ExerciseFormat.instanceToString(snapshot.data), style: _contentStyle);
-                      },
-                    ),
-                    !_selected?Container():Text(
-                      "Maximum",
-                      style: _subtitleStyle,
-                    ),
-                    !_selected?Container():FutureBuilder(
-                      future: DatabaseDataFiltered.getBestInstanceOfExercise(_exercise),
-                      builder: (BuildContext context, AsyncSnapshot<ExerciseInstance> snapshot){
-                        if (snapshot.data == null)
-                          return Text('0x0kg', style: _contentStyle);
-                        else
-                          return Text(ExerciseFormat.instanceToString(snapshot.data), style: _contentStyle);
-                      },
-                    ),
-                    SizedBox(
-                      height: _selected?10.0:5.0,
-                    ),
-                  ],
+                      Divider(
+                        thickness: 1.0,
+                        color: _selected?Colors.white:Colors.black,
+                      ),
+                      SizedBox(
+                        height: _selected?10.0:5.0,
+                      ),
+                      Text(
+                        "Average",
+                        style: _subtitleStyle,
+                      ),
+                      FutureBuilder(
+                        future: DatabaseDataFiltered.getRecentAverage(_exercise),
+                        builder: (BuildContext context, AsyncSnapshot<ExerciseInstance> snapshot){
+                          if (snapshot.data == null)
+                            return Text('0x0kg', style: _contentStyle);
+                          else
+                            return Text(ExerciseFormat.instanceToString(snapshot.data), style: _contentStyle);
+                        },
+                      ),
+                      !_selected?Container():Text(
+                        "Maximum",
+                        style: _subtitleStyle,
+                      ),
+                      !_selected?Container():FutureBuilder(
+                        future: DatabaseDataFiltered.getBestInstanceOfExercise(_exercise),
+                        builder: (BuildContext context, AsyncSnapshot<ExerciseInstance> snapshot){
+                          if (snapshot.data == null)
+                            return Text('0x0kg', style: _contentStyle);
+                          else
+                            return Text(ExerciseFormat.instanceToString(snapshot.data), style: _contentStyle);
+                        },
+                      ),
+                      SizedBox(
+                        height: _selected?10.0:5.0,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
