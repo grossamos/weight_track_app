@@ -26,6 +26,8 @@ dependencies:
   sqflite: ^1.0.0
   path_provider: ^1.4.0
   fluttertoast: ^7.1.6
+  shared_preferences:
+  flutter_svg:
   flutter:
     sdk: flutter
 
@@ -80,3 +82,6 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+  assets:
+    - assets/welcome.svg
