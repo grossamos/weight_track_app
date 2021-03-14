@@ -33,10 +33,9 @@ class _MainContentPaneState extends State<MainContentPane> {
   Future<Widget> getMainScreen() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool showWelcomeScreen = true;
-    // welcome page 
+    // welcome page
     if (prefs.getBool('seen') != null)
       showWelcomeScreen = prefs.getBool('seen');
-    print(showWelcomeScreen);
     if (showWelcomeScreen){
       prefs.setBool('seen', false);
       return Scaffold(

@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:weight_track_app/logic/exercise_calc/exercise_calc.dart';
 import 'package:weight_track_app/logic/storage/database_helper.dart';
@@ -80,6 +81,59 @@ class DatabaseDataFiltered{
     }
     DatabaseDataUnfiltered.addExerciseInstance(sessionId, instance);
     return maps[0]['name'];
+  }
+
+  static Future<LineChartBarData> getChartDataOfDay(int idOfDay) async {
+    Database db = await DatabaseHelper.instance.database;
+    LineChartBarData chartData = LineChartBarData(spots: [], isCurved: false);
+    /*
+        1. get exercise ids
+        2. get exerciseSessions of those ids
+        3. for every exerciseSession group by days
+           -> for group x is day since first day
+           -> for group y is average strength value
+     */
+    List<Map<String, dynamic>> mapOfExercises = await db.query('exercises', where: "idOfDay = $idOfDay");
+    List<int> exerciseIds = List.generate(mapOfExercises.length, (index) => mapOfExercises[index]['id']);
+    List<Map<String, dynamic>> mapOfSessions = await db.rawQuery('SELECT id, date FROM exerciseSessions WHERE idOfExercise IN (${exerciseIds.toString().substring(1, exerciseIds.toString().length - 1)})');
+
+    // group by date
+    List<Map<String, dynamic>> sessionIdGroups = [];
+    for (Map sessionMap in mapOfSessions){
+      bool foundPlace = false;
+      for (Map group in sessionIdGroups){
+        if (group['date'] == sessionMap['date']){
+          group['ids'].add(sessionMap['id']);
+          foundPlace = true;
+          break;
+        }
+      }
+      if (!foundPlace){
+        sessionIdGroups.add({'date':sessionMap['date'], 'ids':[sessionMap['id']]});
+      }
+    }
+    // print('sorting...');
+    sessionIdGroups.sort((Map a, Map b){
+      if (DateTime.tryParse(a['date']).isBefore(DateTime.tryParse(b['date'])))
+       return -1;
+      else if (DateTime.tryParse(a['date']).isAfter(DateTime.tryParse(b['date'])))
+        return 1;
+      else
+        return 0;
+    });
+    print (sessionIdGroups);
+
+    // get highest strength value fro group
+    for (int i = 0; i < sessionIdGroups.length; i++){
+      Map sessionGroup = sessionIdGroups[i];
+      List<Map<String, dynamic>> mapOfHighestStrengthValue = await db.rawQuery( 'SELECT max( strengthValue ) '
+                                                                                'FROM exerciseInstances '
+                                                                                'WHERE idOfExerciseSession '
+                                                                                'In (${sessionGroup['ids'].toString().substring(1, sessionGroup['ids'].toString().length - 1)})');
+      chartData.spots.add(FlSpot(i.toDouble(), mapOfHighestStrengthValue[0]['max( strengthValue )']));
+    }
+
+    return chartData;
   }
 
 
