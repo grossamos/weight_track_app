@@ -23,82 +23,92 @@ class _GraphForSplitDayState extends State<GraphForSplitDay> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: DatabaseDataFiltered.getChartDataOfDay(_dayOfSplit.id),
-      builder: (BuildContext context, AsyncSnapshot<List<FlSpot>> dataSnapshot){
-        if (dataSnapshot.data == null)
-          return Text("Loading: " + _dayOfSplit.name);
-        else
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(15)),
-                color: Color(0xffF3F3F3),
-              ),
+      builder: (BuildContext existanceContext, AsyncSnapshot<bool> exists) {
+        if (exists.data == null || !exists.data){
+          return Container();
+        }
+        return FutureBuilder(
+          future: DatabaseDataFiltered.getChartDataOfDay(_dayOfSplit.id),
+          builder: (BuildContext context,
+              AsyncSnapshot<List<FlSpot>> dataSnapshot) {
+            if (dataSnapshot.data == null)
+              return Text("Loading: " + _dayOfSplit.name);
+            else
+              return Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 20, horizontal: 20),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      color: Color(0xffF3F3F3),
+                    ),
 
-              width: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.all(25.0),
-                child: LineChart(
-                  LineChartData(
-                    lineBarsData: [
-                      LineChartBarData(
-                          spots: dataSnapshot.data,
-                          isCurved: true,
-                          colors: [
-                            Color(0xff55C3A3),
-                            Color(0xffA5D488)
-                          ],
-                          barWidth: 8,
-                          dotData: FlDotData(
-                            show: false,
-                          ),
-                      )
-                    ],
-                    lineTouchData: LineTouchData(
-                      handleBuiltInTouches: false,
-                    ),
-                    gridData: FlGridData(
-                      show: false
-                    ),
-                    titlesData: FlTitlesData(
-                      bottomTitles: SideTitles(
-                        showTitles: true,
-                        reservedSize: 22,
-                        getTextStyles: (value) => const TextStyle(
-                        color: Color(0xff72719b),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        ),
-                        margin: 40,
-                        ),
-                        leftTitles: SideTitles(
-                          showTitles: false,
-                        ),
-                    ),
-                    borderData: FlBorderData(
-                      show: false,
-                      border: const Border(
-                        bottom: BorderSide(
-                          color: Color(0xff4e4965),
-                          width: 4,
-                        ),
-                        left: BorderSide(
-                          color: Colors.transparent,
-                        ),
-                        right: BorderSide(
-                          color: Colors.transparent,
-                        ),
-                        top: BorderSide(
-                          color: Colors.transparent,
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.all(25.0),
+                      child: LineChart(
+                        LineChartData(
+                            lineBarsData: [
+                              LineChartBarData(
+                                spots: dataSnapshot.data,
+                                isCurved: true,
+                                colors: [
+                                  Color(0xff55C3A3),
+                                  Color(0xffA5D488)
+                                ],
+                                barWidth: 8,
+                                dotData: FlDotData(
+                                  show: false,
+                                ),
+                              )
+                            ],
+                            lineTouchData: LineTouchData(
+                              handleBuiltInTouches: false,
+                            ),
+                            gridData: FlGridData(
+                                show: false
+                            ),
+                            titlesData: FlTitlesData(
+                              bottomTitles: SideTitles(
+                                showTitles: true,
+                                reservedSize: 22,
+                                getTextStyles: (value) =>
+                                const TextStyle(
+                                  color: Color(0xff72719b),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                                margin: 40,
+                              ),
+                              leftTitles: SideTitles(
+                                showTitles: false,
+                              ),
+                            ),
+                            borderData: FlBorderData(
+                              show: false,
+                              border: const Border(
+                                bottom: BorderSide(
+                                  color: Color(0xff4e4965),
+                                  width: 4,
+                                ),
+                                left: BorderSide(
+                                  color: Colors.transparent,
+                                ),
+                                right: BorderSide(
+                                  color: Colors.transparent,
+                                ),
+                                top: BorderSide(
+                                  color: Colors.transparent,
+                                ),
+                              ),
+                            )
                         ),
                       ),
-                    )
-                  ),
-                ),
-              ),
-            ));
-      },
+                    ),
+                  ));
+          },
+        );
+      }
     );
   }
 }

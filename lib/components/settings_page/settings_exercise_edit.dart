@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:weight_track_app/components/settings_page/settings_adding_dialogue.dart';
 import 'package:weight_track_app/components/settings_page/settings_edit_chip.dart';
 import 'package:weight_track_app/components/settings_page/settings_edit_fab.dart';
@@ -147,7 +146,7 @@ class _SettingsExerciseOfDayEditState extends State<SettingsExerciseOfDayEdit> {
               style: TextStyle(
                   color: Color(0xff929292),
                   fontSize: 24,
-                  fontFamily: GoogleFonts.roboto().fontFamily),
+              ),
             ),
             IconButton(
                 icon: Icon(
