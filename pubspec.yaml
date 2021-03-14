@@ -24,5 +24,10 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  fonts:
+    - family: Raleway
+      fonts:
+        - asset: assets/fonts/Raleway-Italic-VariableFont_wght.ttf
+        - asset: assets/fonts/Raleway-VariableFont_wght.ttf
   assets:
     - assets/welcome.svg
