@@ -47,7 +47,7 @@ class ExerciseSelectionManager{
     int selectedIndex = _selectedIndexes[idOfDay];
     if (selectedIndex == null)
       selectedIndex = 0;
-    if (_exercises[idOfDay] == null) {
+    if (_exercises[idOfDay] == null || _exercises.isEmpty) {
       return Exercise(name: "Exercise", id: -720);
     }
     return _exercises[idOfDay][selectedIndex];

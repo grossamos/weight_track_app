@@ -1,4 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:weight_track_app/logic/exercise_calc/exercise_calc.dart';
 import 'package:weight_track_app/logic/storage/database_helper.dart';
@@ -83,9 +84,9 @@ class DatabaseDataFiltered{
     return maps[0]['name'];
   }
 
-  static Future<LineChartBarData> getChartDataOfDay(int idOfDay) async {
+  static Future<List<FlSpot>> getChartDataOfDay(int idOfDay) async {
     Database db = await DatabaseHelper.instance.database;
-    LineChartBarData chartData = LineChartBarData(spots: [], isCurved: false);
+    List<FlSpot> spots = [];
     /*
         1. get exercise ids
         2. get exerciseSessions of those ids
@@ -121,7 +122,6 @@ class DatabaseDataFiltered{
       else
         return 0;
     });
-    print (sessionIdGroups);
 
     // get highest strength value fro group
     for (int i = 0; i < sessionIdGroups.length; i++){
@@ -130,10 +130,10 @@ class DatabaseDataFiltered{
                                                                                 'FROM exerciseInstances '
                                                                                 'WHERE idOfExerciseSession '
                                                                                 'In (${sessionGroup['ids'].toString().substring(1, sessionGroup['ids'].toString().length - 1)})');
-      chartData.spots.add(FlSpot(i.toDouble(), mapOfHighestStrengthValue[0]['max( strengthValue )']));
+      spots.add(FlSpot(i.toDouble(), mapOfHighestStrengthValue[0]['max( strengthValue )']));
     }
 
-    return chartData;
+    return spots;
   }
 
 
