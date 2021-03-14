@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:weight_track_app/logic/exercise_calc/chart_calc.dart';
 import 'package:weight_track_app/logic/exercise_calc/exercise_format.dart';
 import 'package:weight_track_app/logic/storage/database_filtered_data.dart';
@@ -115,13 +114,12 @@ class _ExerciseListItemState extends State<ExerciseListItem> {
   Widget build(BuildContext context) {
     bool _selected = ExerciseSelectionManager.checkIfSelected(_indexOfItem, _idOfDay);
     TextStyle _subtitleStyle = TextStyle(
-      fontFamily: GoogleFonts.roboto().fontFamily,
       fontWeight: _selected?FontWeight.w600:FontWeight.w300,
       fontSize: 18.0,
       color: _selected?Colors.white:Colors.black,
     );
     TextStyle _contentStyle = TextStyle(
-      fontFamily: GoogleFonts.roboto().fontFamily,
+      fontFamily: 'Raleway',
       fontWeight: FontWeight.w200,
       fontSize: 18.0,
       color: _selected?Colors.white:Colors.black,
@@ -160,7 +158,7 @@ class _ExerciseListItemState extends State<ExerciseListItem> {
                         // contentPadding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 20),
                         title: Text(_exercise.name,
                           style: TextStyle(
-                            fontFamily: GoogleFonts.raleway().fontFamily,
+                            fontFamily: 'Raleway',
                             fontSize: 36,
                             color: Color(0xff676767)
                           ),
@@ -213,7 +211,7 @@ class _ExerciseListItemState extends State<ExerciseListItem> {
                       Text(
                         _exercise.name,
                         style: TextStyle(
-                          fontFamily: GoogleFonts.raleway().fontFamily,
+                          fontFamily: 'Raleway',
                           fontSize: 24.0,
                           color: _selected?Colors.white:Colors.black
                         ),

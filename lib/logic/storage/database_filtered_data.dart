@@ -136,6 +136,12 @@ class DatabaseDataFiltered{
     return spots;
   }
 
-
+  Future<bool> containsExerciseInstancesForAllDays(int idOfDay) async{
+    Database db = await DatabaseHelper.instance.database;
+    List<Map<String, dynamic>> mapOfExercises = await db.query('exercises', where: "idOfDay = $idOfDay");
+    List<int> exerciseIds = List.generate(mapOfExercises.length, (index) => mapOfExercises[index]['id']);
+    List<Map<String, dynamic>> mapOfSessions = await db.rawQuery('SELECT id FROM exerciseSessions WHERE idOfExercise IN (${exerciseIds.toString().substring(1, exerciseIds.toString().length)})');
+    return mapOfSessions.length > 0;
+  }
 
 }

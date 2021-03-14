@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:weight_track_app/components/settings_page/settings_tile.dart';
 import 'package:weight_track_app/navigation/main_route_constants.dart';
 
@@ -21,7 +20,7 @@ class SettingsPage extends StatelessWidget {
                 "Your\nSettings",
                 style: TextStyle(
                     color: Color.fromRGBO(0xBF, 0xBF, 0xBF, 1),
-                    fontFamily: GoogleFonts.raleway().fontFamily,
+                    fontFamily: 'Raleway',
                     fontSize: 48
                 ),
               ),

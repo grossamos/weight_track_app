@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weight_track_app/navigation/main_route_constants.dart';
 import 'dart:ui' as ui;
@@ -52,7 +51,7 @@ class _MainContentPaneState extends State<MainContentPane> {
               ),
               Text('Welcome',
                 style: TextStyle(
-                  fontFamily: GoogleFonts.raleway().fontFamily,
+                  fontFamily: 'Raleway',
                   fontSize: 24
                 ),
               ),
@@ -60,7 +59,7 @@ class _MainContentPaneState extends State<MainContentPane> {
                 padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 40),
                 child: Text('Get started by adding your  split and exercises in the settings menu',
                   style: TextStyle(
-                    fontFamily: GoogleFonts.raleway().fontFamily,
+                    fontFamily: 'Raleway',
                     fontSize: 18,
                     color: Color(0xff8E8E8E),
                   ),
@@ -74,7 +73,7 @@ class _MainContentPaneState extends State<MainContentPane> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   FlatButton(onPressed: () => setState((){}), child: Text('Get Started', style: TextStyle(
-                    fontFamily: GoogleFonts.raleway().fontFamily,
+                    fontFamily: 'Raleway',
                     fontSize: 18,
                     color: Color(0xff4A664A),
                     decoration: TextDecoration.underline,

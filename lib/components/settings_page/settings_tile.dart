@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'dart:ui' as ui;
 
 class SettingsTile extends StatelessWidget {
@@ -44,7 +43,7 @@ class SettingsTile extends StatelessWidget {
             Text(
               _text,
               style: TextStyle(
-                  fontSize: 18, fontFamily: GoogleFonts.roboto().fontFamily, color: Color(0xff55C3A3)),
+                  fontSize: 18, color: Color(0xff55C3A3)),
             )
           ],
         ),

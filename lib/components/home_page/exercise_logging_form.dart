@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:weight_track_app/components/home_page/exercise_logging_form_field.dart';
 import 'package:weight_track_app/components/home_page/exercise_selection_manager.dart';
 import 'package:weight_track_app/logic/storage/database_filtered_data.dart';
@@ -45,7 +44,6 @@ class _ExerciseLoggingFormState extends State<ExerciseLoggingForm> {
                   "Logging",
                   style: TextStyle(
                       color: Color(0xffBEBEBE),
-                      fontFamily: GoogleFonts.roboto().fontFamily,
                       fontSize: 18.0),
                 ),
                 // TODO add check to default to going with a future builder and getting the text yourself from Database for first build
@@ -55,7 +53,7 @@ class _ExerciseLoggingFormState extends State<ExerciseLoggingForm> {
                           .name,
                   style: TextStyle(
                       color: Colors.black,
-                      fontFamily: GoogleFonts.raleway().fontFamily,
+                      fontFamily: 'Raleway',
                       fontSize: 24.0),
                 ),
                 SizedBox(

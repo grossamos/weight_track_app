@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:weight_track_app/components/main_page/main_content_pane.dart';
 import 'package:weight_track_app/navigation/main_route_constants.dart';
 
@@ -48,7 +47,7 @@ class SettingsTitle extends StatelessWidget {
                   _title,
                   style: TextStyle(
                       color: Color(0xff928B8B),
-                      fontFamily: GoogleFonts.raleway().fontFamily,
+                      fontFamily: 'Raleway',
                       fontSize: 48),
                 ),
                 Padding(
@@ -57,7 +56,7 @@ class SettingsTitle extends StatelessWidget {
                     _subTitle,
                     style: TextStyle(
                         color: Color(0xff928B8B),
-                        fontFamily: GoogleFonts.raleway().fontFamily,
+                        fontFamily: 'Raleway',
                         fontSize: 18),
                   ),
                 ),

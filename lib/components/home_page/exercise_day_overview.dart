@@ -29,7 +29,7 @@ class _ExerciseDayOfSplitPageState extends State<ExerciseDayOfSplitPage> {
                 "What are you training today?",
                 style: TextStyle(
                     color: Color.fromRGBO(0xBF, 0xBF, 0xBF, 1),
-                    fontFamily: GoogleFonts.raleway().fontFamily,
+                    fontFamily: 'Raleway',
                     fontSize: 48
                 ),
               ),
@@ -92,7 +92,6 @@ class _ExerciseDayOfSplitPageState extends State<ExerciseDayOfSplitPage> {
             builder: (BuildContext context, AsyncSnapshot<String> snapshot){
               TextStyle textStyle = TextStyle(
                   fontSize: 17,
-                  fontFamily: GoogleFonts.roboto().fontFamily
               );
               if (snapshot.data == null)
                 return Text('loading', style: textStyle);

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:weight_track_app/logic/storage/database_filtered_data.dart';
 
 class ExerciseLogTitle extends StatelessWidget {
@@ -26,7 +25,7 @@ class ExerciseLogTitle extends StatelessWidget {
             style: TextStyle(
               foreground: Paint()..shader = linearGradient,
               fontSize: 48.0,
-              fontFamily: GoogleFonts.raleway().fontFamily
+              fontFamily: 'Raleway'
             ),
           );
         },
