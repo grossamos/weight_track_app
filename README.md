@@ -3,6 +3,10 @@
 ## Description
 The weight track app, now written in flutter. This app can track what you lifted over time and give smart predictions on what your next weight should be.
 
+This project has how been published to google play. Ever since there have been many more bugs discovered, so yeah use with caution...
+
+<a _ngcontent-pfu-c7="" href="https://play.google.com/store/apps/details?id=com.amosgross.weight_track_app&amp;pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"><img _ngcontent-pfu-c7="" alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" class="google_play_badge"></a>
+
 ## Models
 - Organisation in:
     - DayOfSplit
