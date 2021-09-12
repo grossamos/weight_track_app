@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class SettingsAddingDialogue extends StatelessWidget {
   final Function(String) _onSave;
   final String _hint;
-  TextEditingController _controller = new TextEditingController();
+  final TextEditingController _controller = new TextEditingController();
   SettingsAddingDialogue(this._hint, this._onSave);
 
   @override

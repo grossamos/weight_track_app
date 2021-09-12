@@ -6,7 +6,7 @@ import 'package:weight_track_app/navigation/main_route_constants.dart';
 class SettingsTitle extends StatelessWidget {
   final String _title;
   final String _subTitle;
-  Function onClose;
+  final Function onClose;
 
   SettingsTitle(this._title, this._subTitle, {this.onClose});
 

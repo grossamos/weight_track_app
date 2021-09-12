@@ -9,7 +9,6 @@ import 'package:weight_track_app/logic/storage/database_unfiltered_data.dart';
 import 'package:weight_track_app/models/difficulty.dart';
 import 'package:weight_track_app/models/exercise.dart';
 import 'package:weight_track_app/models/exercise_instance.dart';
-import 'package:weight_track_app/navigation/main_route_constants.dart';
 
 import 'exercise_selection_manager.dart';
 
@@ -33,7 +32,7 @@ class _ExerciseListWidgetState extends State<ExerciseListWidget> {
       future: DatabaseDataUnfiltered.getExercisesOfDay(_idOfDay),
       builder: (BuildContext context, AsyncSnapshot<List<Exercise>> snapshot){
         if (snapshot.data == null)
-          return Text('loading...');
+          return Container();
         else {
           // TODO: somehow update the name of the exercise after the selected exercise has been loaded
           ExerciseSelectionManager.updateExercises(snapshot.data, _idOfDay);
@@ -47,16 +46,7 @@ class _ExerciseListWidgetState extends State<ExerciseListWidget> {
               children: [
                 Expanded(
                   child: Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: List.generate(
-                          (snapshot.data.length / 2).floor(), (int index) {
-                        if (snapshot.data[index] == null) {
-                          return Text('loading');
-                        }
-                        return ExerciseListItem(snapshot.data[index], index, _idOfDay);
-                      }),
-                    ),
+                    child: ExerciseColumn(snapshot.data, (snapshot.data.length / 2).ceil(), (snapshot.data.length / 2).floor(), _idOfDay)
                   ),
                 ),
                 SizedBox(
@@ -64,23 +54,7 @@ class _ExerciseListWidgetState extends State<ExerciseListWidget> {
                 ),
                 Expanded(
                   child: Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: List.generate((snapshot.data.length / 2).ceil(),
-                          (int index) {
-                        if (snapshot.data[
-                                index + (snapshot.data.length / 2).floor()] ==
-                            null) {
-                          return Text('Loading');
-                        }
-                        return ExerciseListItem(
-                            snapshot.data[
-                                index + (snapshot.data.length / 2).floor()],
-                            index + (snapshot.data.length / 2).floor(),
-                          _idOfDay
-                        );
-                      }),
-                    ),
+                    child: ExerciseColumn(snapshot.data, (snapshot.data.length / 2).floor(), 0, _idOfDay)
                   ),
                 ),
               ],
@@ -91,6 +65,31 @@ class _ExerciseListWidgetState extends State<ExerciseListWidget> {
     );
   }
 }
+
+class ExerciseColumn extends StatelessWidget {
+  final List<Exercise> exercises;
+  final int lenOfColumn;
+  final int startIndex;
+  final int _idOfDay;
+
+  ExerciseColumn(this.exercises, this.lenOfColumn, this.startIndex, this._idOfDay);
+
+  ExerciseListItem getItemForIndex(int index) {
+    // if (snapshot.data[index + (snapshot.data.length / 2).floor()] == null) {
+    //   return Container();
+    // }
+    return ExerciseListItem(exercises[startIndex + index], startIndex + index, _idOfDay);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: List.generate(lenOfColumn, getItemForIndex),
+    );
+  }
+}
+
 
 class ExerciseListItem extends StatefulWidget {
   final Exercise _exercise;
