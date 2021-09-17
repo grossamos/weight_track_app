@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weight_track_app/components/home_page/ecercise_log_title.dart';
 import 'package:weight_track_app/components/home_page/exercise_list.dart';
+import 'package:weight_track_app/components/home_page/exercise_log_bloc.dart';
 import 'package:weight_track_app/components/shared/info_text.dart';
 import 'package:weight_track_app/logic/storage/database_filtered_data.dart';
 
+import 'exercise_log_state.dart';
 import 'exercise_logging_form.dart';
 
 class ExerciseLogPage extends StatelessWidget {
@@ -34,19 +37,22 @@ class ExerciseLogPage extends StatelessWidget {
         }
         return SafeArea(
           child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ExerciseLogTitle(_idOfDay),
-                ExerciseLoggingForm(_idOfDay),
-                SizedBox(
-                  height: 20.0,
-                ),
-                ExerciseListWidget(_idOfDay),
-                SizedBox(
-                  height: 100.0,
-                )
-              ],
+            child: BlocProvider(
+              create: (BuildContext context) => ExerciseLogCubit(_idOfDay),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ExerciseLogTitle(_idOfDay),
+                  ExerciseLoggingForm(_idOfDay),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  ExerciseListWidget(_idOfDay),
+                  SizedBox(
+                    height: 100.0,
+                  )
+                ],
+              ),
             ),
           ),
         );

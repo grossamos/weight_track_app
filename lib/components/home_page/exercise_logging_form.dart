@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weight_track_app/components/home_page/exercise_log_bloc.dart';
 import 'package:weight_track_app/components/home_page/exercise_logging_form_field.dart';
 import 'package:weight_track_app/components/home_page/exercise_selection_manager.dart';
 import 'package:weight_track_app/logic/storage/database_filtered_data.dart';
 import 'package:weight_track_app/models/exercise_instance.dart';
+
+import 'exercise_log_state.dart';
 
 // TODO: fix error, when attempting to add to empty day
 
@@ -37,51 +41,56 @@ class _ExerciseLoggingFormState extends State<ExerciseLoggingForm> {
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 22),
           child: Form(
             key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Logging",
-                  style: TextStyle(
-                      color: Color(0xffBEBEBE),
-                      fontSize: 18.0),
-                ),
-                // TODO add check to default to going with a future builder and getting the text yourself from Database for first build
-                Text(
-                  "Enter your last set of " +
-                      ExerciseSelectionManager.getSelectedExercise(_idOfDay)
-                          .name,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: 'Raleway',
-                      fontSize: 24.0),
-                ),
-                SizedBox(
-                  height: 35,
-                ),
-                ExerciseLoggingFormField(
-                    loggingOnSaveWeights, loggingValidate, 'Weight', 205),
-                SizedBox(
-                  height: 17,
-                ),
-                ExerciseLoggingFormField(
-                    loggingOnSaveReps, loggingValidate, 'Rep Count', 285),
-                SizedBox(
-                  height: 17,
-                ),
-                // TODO default to one set
-                ExerciseLoggingFormField(
-                  loggingOnSaveSets,
-                  loggingValidate,
-                  'Set Count',
-                  335,
-                  isLastField: true,
-                  gvnOnDone: loggingOnDone,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-              ],
+            child: BlocBuilder<ExerciseLogCubit, ExerciseLogState>(
+              builder: (BuildContext context, ExerciseLogState state) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Logging",
+                      style:
+                          TextStyle(color: Color(0xffBEBEBE), fontSize: 18.0),
+                    ),
+                    // TODO add check to default to going with a future builder and getting the text yourself from Database for first build
+                    Text(
+                      "Enter your last set of " +
+                          ExerciseSelectionManager.getSelectedExercise(_idOfDay)
+                              .name,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Raleway',
+                          fontSize: 24.0),
+                    ),
+                    SizedBox(
+                      height: 35,
+                    ),
+                    ExerciseLoggingFormField(
+                        loggingOnSaveWeights, loggingValidate, 'Weight', 205),
+                    SizedBox(
+                      height: 17,
+                    ),
+                    ExerciseLoggingFormField(
+                        loggingOnSaveReps, loggingValidate, 'Rep Count', 285),
+                    SizedBox(
+                      height: 17,
+                    ),
+                    // TODO default to one set
+                    ExerciseLoggingFormField(
+                      loggingOnSaveSets,
+                      loggingValidate,
+                      'Set Count',
+                      335,
+                      isLastField: true,
+                      gvnOnDone: () {
+                        
+                      },
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                  ],
+                );
+              },
             ),
           ),
         ),
