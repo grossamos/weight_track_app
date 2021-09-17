@@ -45,7 +45,6 @@ class SettingsDayEditSelectionManager{
       try {
         f();
       } catch (exception) {
-        print("exception");
       }
     _selectedListeners = [];
   }

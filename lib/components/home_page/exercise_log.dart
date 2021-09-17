@@ -3,17 +3,17 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weight_track_app/components/home_page/ecercise_log_title.dart';
 import 'package:weight_track_app/components/home_page/exercise_list.dart';
-import 'package:weight_track_app/components/home_page/exercise_log_bloc.dart';
+import 'package:weight_track_app/components/home_page/exercise_log_cubit.dart';
 import 'package:weight_track_app/components/shared/info_text.dart';
 import 'package:weight_track_app/logic/storage/database_filtered_data.dart';
 
-import 'exercise_log_state.dart';
 import 'exercise_logging_form.dart';
 
 class ExerciseLogPage extends StatelessWidget {
   final int _idOfDay;
+  final ExerciseLogCubit logCubit;
 
-  ExerciseLogPage(this._idOfDay);
+  ExerciseLogPage(this._idOfDay) : logCubit = new ExerciseLogCubit(_idOfDay);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class ExerciseLogPage extends StatelessWidget {
         return SafeArea(
           child: SingleChildScrollView(
             child: BlocProvider(
-              create: (BuildContext context) => ExerciseLogCubit(_idOfDay),
+              create: (BuildContext context) => logCubit,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

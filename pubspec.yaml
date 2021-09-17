@@ -13,6 +13,7 @@ dependencies:
   fluttertoast: ^7.1.6
   shared_preferences:
   flutter_bloc: ^7.2.0
+  equatable: ^2.0.3
   flutter_svg:
   flutter:
     sdk: flutter

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:weight_track_app/components/home_page/exercise_log_bloc.dart';
+import 'package:weight_track_app/components/home_page/exercise_log_cubit.dart';
 import 'package:weight_track_app/components/home_page/exercise_logging_form_field.dart';
-import 'package:weight_track_app/components/home_page/exercise_selection_manager.dart';
 import 'package:weight_track_app/logic/storage/database_filtered_data.dart';
+import 'package:weight_track_app/models/exercise.dart';
 import 'package:weight_track_app/models/exercise_instance.dart';
 
 import 'exercise_log_state.dart';
@@ -30,7 +30,6 @@ class _ExerciseLoggingFormState extends State<ExerciseLoggingForm> {
 
   @override
   Widget build(BuildContext context) {
-    ExerciseSelectionManager.addListener(() => setState(() {}), _idOfDay);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: Container(
@@ -40,59 +39,57 @@ class _ExerciseLoggingFormState extends State<ExerciseLoggingForm> {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 22),
           child: Form(
-            key: _formKey,
-            child: BlocBuilder<ExerciseLogCubit, ExerciseLogState>(
-              builder: (BuildContext context, ExerciseLogState state) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Logging",
-                      style:
-                          TextStyle(color: Color(0xffBEBEBE), fontSize: 18.0),
-                    ),
-                    // TODO add check to default to going with a future builder and getting the text yourself from Database for first build
-                    Text(
-                      "Enter your last set of " +
-                          ExerciseSelectionManager.getSelectedExercise(_idOfDay)
-                              .name,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Raleway',
-                          fontSize: 24.0),
-                    ),
-                    SizedBox(
-                      height: 35,
-                    ),
-                    ExerciseLoggingFormField(
-                        loggingOnSaveWeights, loggingValidate, 'Weight', 205),
-                    SizedBox(
-                      height: 17,
-                    ),
-                    ExerciseLoggingFormField(
-                        loggingOnSaveReps, loggingValidate, 'Rep Count', 285),
-                    SizedBox(
-                      height: 17,
-                    ),
-                    // TODO default to one set
-                    ExerciseLoggingFormField(
-                      loggingOnSaveSets,
-                      loggingValidate,
-                      'Set Count',
-                      335,
-                      isLastField: true,
-                      gvnOnDone: () {
-                        
-                      },
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Logging",
+                    style: TextStyle(color: Color(0xffBEBEBE), fontSize: 18.0),
+                  ),
+                  // TODO add check to default to going with a future builder and getting the text yourself from Database for first build
+                  BlocBuilder<ExerciseLogCubit, ExerciseLogState>(
+                    builder: (BuildContext context, ExerciseLogState titleState) {
+                      return Text(
+                        "Enter your last set of " + titleState.selectedExercise.name,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Raleway',
+                            fontSize: 24.0),
+                      );
+                    },
+                  ),
+                  SizedBox(
+                    height: 35,
+                  ),
+                  ExerciseLoggingFormField(
+                      loggingOnSaveWeights, loggingValidate, 'Weight', 205),
+                  SizedBox(
+                    height: 17,
+                  ),
+                  ExerciseLoggingFormField(
+                      loggingOnSaveReps, loggingValidate, 'Rep Count', 285),
+                  SizedBox(
+                    height: 17,
+                  ),
+                  // TODO default to one set
+                  ExerciseLoggingFormField(
+                    loggingOnSaveSets,
+                    loggingValidate,
+                    'Set Count',
+                    335,
+                    isLastField: true,
+                    gvnOnDone: () {
+                      BlocProvider.of<ExerciseLogCubit>(context)
+                          .changeSelectedExercise(
+                              0, Exercise(id: 0, name: 'Other thang'));
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                ],
+              )),
         ),
       ),
     );
@@ -106,7 +103,8 @@ class _ExerciseLoggingFormState extends State<ExerciseLoggingForm> {
       for (int i = 0; i < _tmpSets; i++) {
         DatabaseDataFiltered.addExerciseInstance(
             ExerciseInstance(reps: _tmpReps, weight: _tmpWeight),
-            ExerciseSelectionManager.getSelectedExercise(_idOfDay).id);
+            // TODO make this into a propper id!
+            0);
       }
     }
   }

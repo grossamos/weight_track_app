@@ -52,7 +52,6 @@ class SettingsExerciseEditSelectionManager {
       try {
         f();
       } catch (exception) {
-      print("exception");
       }
     _selectedListeners = [];
   }

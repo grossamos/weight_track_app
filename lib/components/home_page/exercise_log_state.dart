@@ -1,24 +1,30 @@
+import 'package:flutter/cupertino.dart';
 import 'package:weight_track_app/models/exercise.dart';
 
+@immutable
 class ExerciseLogState {
-  // Todo add init call setting index to 0 for page load
-  int _currentDay;
-  int _selectedIndex;
-  Exercise _selectedExercise;
+  final int _currentDay;
+  final int selectedIndex;
+  final Exercise selectedExercise;
 
-  ExerciseLogState._();
+  ExerciseLogState(this._currentDay, this.selectedIndex, this.selectedExercise);
 
   factory ExerciseLogState.initial(int idOfDay) {
-    return ExerciseLogState._()
-      .._selectedIndex = 0
-      .._currentDay = idOfDay;
+    return ExerciseLogState(idOfDay, 0, Exercise(id: 0, name: 'Exercise'));
   }
 
-  set selectedIndex(int value) {
-    _selectedIndex = value;
-  }
+  int get currentDay => _currentDay;
 
-  set selectedExercise(Exercise value) {
-    _selectedExercise = value;
-  }
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ExerciseLogState &&
+          runtimeType == other.runtimeType &&
+          _currentDay == other._currentDay &&
+          selectedIndex == other.selectedIndex &&
+          selectedExercise == other.selectedExercise;
+
+  @override
+  int get hashCode =>
+      _currentDay.hashCode ^ selectedIndex.hashCode ^ selectedExercise.hashCode;
 }

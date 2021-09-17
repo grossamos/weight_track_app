@@ -6,8 +6,6 @@ class ExerciseLogCubit extends Cubit<ExerciseLogState> {
   ExerciseLogCubit(int idOfDay) : super(ExerciseLogState.initial(idOfDay));
 
   void changeSelectedExercise(int index, Exercise exercise) {
-    state.selectedExercise = exercise;
-    state.selectedIndex = index;
-    emit(state);
+    emit(ExerciseLogState(state.currentDay, index, exercise));
   }
 }
