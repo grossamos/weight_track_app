@@ -65,11 +65,11 @@ class DatabaseDataFiltered{
     return maps[0]['name'];
   }
 
-  static Future<String> addExerciseInstance(ExerciseInstance instance, int idOfExercise) async {
+  static void addExerciseInstance(ExerciseInstance instance, int idOfExercise) async {
     DateTime now = DateTime.now();
     DateTime today = DateTime(now.year, now.month, now.day);
     Database db = await DatabaseHelper.instance.database;
-    List<Map<String, dynamic>> maps = await db.rawQuery('SELECT id FROM exerciseSessions WHERE idOfExercise=$idOfExercise AND date="${today.toString()}"');
+    List<Map<String, dynamic>> maps = await db.rawQuery('SELECT id FROM exerciseSessions WHERE idOfExercise=$idOfExercise AND date=\'${today.toString()}\'');
     int sessionId;
     if (maps.isEmpty || maps == null){
       // create a new Exercise Session
@@ -79,7 +79,6 @@ class DatabaseDataFiltered{
       sessionId = maps[0]['id'];
     }
     DatabaseDataUnfiltered.addExerciseInstance(sessionId, instance);
-    return maps[0]['name'];
   }
 
   Future<bool> containsExerciseInstancesForAllDays(int idOfDay) async{

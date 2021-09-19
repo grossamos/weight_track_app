@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weight_track_app/components/home_page/exercise_log_cubit.dart';
 import 'package:weight_track_app/components/home_page/exercise_logging_form_field.dart';
 import 'package:weight_track_app/logic/storage/database_filtered_data.dart';
-import 'package:weight_track_app/models/exercise.dart';
 import 'package:weight_track_app/models/exercise_instance.dart';
 
 import 'exercise_log_state.dart';
@@ -11,22 +10,17 @@ import 'exercise_log_state.dart';
 // TODO: fix error, when attempting to add to empty day
 
 class ExerciseLoggingForm extends StatefulWidget {
-  final int _idOfDay;
-  ExerciseLoggingForm(this._idOfDay);
+  ExerciseLoggingForm();
 
   @override
   _ExerciseLoggingFormState createState() =>
-      _ExerciseLoggingFormState(_idOfDay);
+      _ExerciseLoggingFormState();
 }
 
 class _ExerciseLoggingFormState extends State<ExerciseLoggingForm> {
   final _formKey = GlobalKey<FormState>();
-  final int _idOfDay;
-  double _tmpWeight;
-  int _tmpReps;
-  int _tmpSets;
 
-  _ExerciseLoggingFormState(this._idOfDay);
+  _ExerciseLoggingFormState();
 
   @override
   Widget build(BuildContext context) {
@@ -63,27 +57,18 @@ class _ExerciseLoggingFormState extends State<ExerciseLoggingForm> {
                     height: 35,
                   ),
                   ExerciseLoggingFormField(
-                      loggingOnSaveWeights, loggingValidate, 'Weight', 205),
+                      loggingOnSaveWeights, 'Weight', 205),
                   SizedBox(
                     height: 17,
                   ),
                   ExerciseLoggingFormField(
-                      loggingOnSaveReps, loggingValidate, 'Rep Count', 285),
+                      loggingOnSaveReps, 'Rep Count', 285),
                   SizedBox(
                     height: 17,
                   ),
                   // TODO default to one set
                   ExerciseLoggingFormField(
-                    loggingOnSaveSets,
-                    loggingValidate,
-                    'Set Count',
-                    335,
-                    isLastField: true,
-                    gvnOnDone: () {
-                      BlocProvider.of<ExerciseLogCubit>(context)
-                          .changeSelectedExercise(
-                              0, Exercise(id: 0, name: 'Other thang'));
-                    },
+                    loggingOnSaveSets, 'Set Count', 335, isLastField: true, finalizeData: finalizeData,
                   ),
                   SizedBox(
                     height: 20,
@@ -95,19 +80,9 @@ class _ExerciseLoggingFormState extends State<ExerciseLoggingForm> {
     );
   }
 
-  void loggingOnDone() async {
-    FocusScope.of(context).unfocus();
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
-      _formKey.currentState.reset();
-      for (int i = 0; i < _tmpSets; i++) {
-        DatabaseDataFiltered.addExerciseInstance(
-            ExerciseInstance(reps: _tmpReps, weight: _tmpWeight),
-            // TODO make this into a propper id!
-            0);
-      }
-    }
-  }
+  double _tmpWeight;
+  int _tmpReps;
+  int _tmpSets;
 
   String loggingOnSaveWeights(String s) {
     _tmpWeight = double.parse(s);
@@ -115,22 +90,28 @@ class _ExerciseLoggingFormState extends State<ExerciseLoggingForm> {
   }
 
   String loggingOnSaveReps(String s) {
-    _tmpReps = int.parse(s);
+    _tmpReps = double.parse(s).round();
     return null;
   }
 
   String loggingOnSaveSets(String s) {
-    _tmpSets = int.parse(s);
+    _tmpSets = double.parse(s).round();
     return null;
   }
 
-  String loggingValidate(String s) {
-    try {
-      double.parse(s);
-    } catch (FormatException) {
-      return "Please enter a valid number";
-    }
+  void finalizeData() {
+    FocusScope.of(context).unfocus();
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+      _formKey.currentState.reset();
 
-    return null;
+      ExerciseLogCubit cubit = BlocProvider.of<ExerciseLogCubit>(context);
+
+      for (int i = 0; i < _tmpSets; i++) {
+        DatabaseDataFiltered.addExerciseInstance(
+            ExerciseInstance(reps: _tmpReps, weight: _tmpWeight),
+            cubit.state.selectedExercise.id);
+      }
+    }
   }
 }

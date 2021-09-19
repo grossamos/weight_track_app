@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:weight_track_app/components/home_page/ecercise_log_title.dart';
+import 'package:weight_track_app/components/home_page/exercise_log_title.dart';
 import 'package:weight_track_app/components/home_page/exercise_list.dart';
 import 'package:weight_track_app/components/home_page/exercise_log_cubit.dart';
 import 'package:weight_track_app/components/shared/info_text.dart';
@@ -43,7 +43,7 @@ class ExerciseLogPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ExerciseLogTitle(_idOfDay),
-                  ExerciseLoggingForm(_idOfDay),
+                  ExerciseLoggingForm(),
                   SizedBox(
                     height: 20.0,
                   ),
