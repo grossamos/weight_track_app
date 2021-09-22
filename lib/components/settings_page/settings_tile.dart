@@ -16,8 +16,8 @@ class SettingsTile extends StatelessWidget {
       height: 241.0,
       decoration: BoxDecoration(
           color: Color(0xffF3F3F3), borderRadius: BorderRadius.circular(15)),
-      child: FlatButton(
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      child: TextButton(
+        // materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         onPressed: _onPressed,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

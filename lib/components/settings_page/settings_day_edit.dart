@@ -7,7 +7,6 @@ import 'package:weight_track_app/components/settings_page/settings_edit_fab.dart
 import 'package:weight_track_app/components/settings_page/settings_title.dart';
 import 'package:weight_track_app/logic/storage/database_unfiltered_data.dart';
 import 'package:weight_track_app/models/day_of_split.dart';
-import 'package:weight_track_app/navigation/main_route_constants.dart';
 
 class SettingsDayEdit extends StatefulWidget {
   @override
@@ -18,16 +17,7 @@ class _SettingsDayEditState extends State<SettingsDayEdit> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: SettingsEditFAB(
-          () => SettingsDayEditSelectionManager.isInSelectionMode(), () {
-        if (!SettingsDayEditSelectionManager.isInSelectionMode()) {
-          SettingsDayEditSelectionManager.putInSelectionMode();
-        } else {
-          _showDeleteDialogue(context);
-        }
-      }, (Function listener) {
-        SettingsDayEditSelectionManager.addFabListener(listener);
-      }),
+      floatingActionButton: SettingsEditFAB(),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -56,7 +46,7 @@ class _SettingsDayEditState extends State<SettingsDayEdit> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: List.generate(
                                 daySnapshot.data.length,
-                                (index) => SettingsEditChip(
+                                (index) => OLDSettingsEditChip(
                                     daySnapshot.data[index].name,
                                     () {
                                       SettingsDayEditSelectionManager
@@ -102,39 +92,5 @@ class _SettingsDayEditState extends State<SettingsDayEdit> {
         ),
       ),
     );
-  }
-
-  Future<void> _showDeleteDialogue(BuildContext context) async {
-    showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Delete Selection"),
-            content: Text(
-                "Are you sure you wish to delete all selected Exercises and their data?\nThis action cannot be undone."),
-            actions: [
-              TextButton(
-                child: Text("Cancel"),
-                onPressed: () {
-                  SettingsDayEditSelectionManager.exitSelectionMode();
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                child: Text("Delete"),
-                onPressed: () {
-                  mainNavigatorKey.currentState.pop();
-                  for (DayOfSplit day in SettingsDayEditSelectionManager
-                      .getSelectedDaysOfSplit()) {
-                    DatabaseDataUnfiltered.deleteDay(day);
-                  }
-                  SettingsDayEditSelectionManager.exitSelectionMode();
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        });
   }
 }

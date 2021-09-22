@@ -1,49 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weight_track_app/components/settings_page/settings_exercise_edit_state.dart';
 
-class SettingsEditFAB extends StatefulWidget {
-  final Function _checkIfInSelectionMode;
-  final Function _onPressed;
-  final Function(Function) _onInit;
-
-  SettingsEditFAB(this._checkIfInSelectionMode, this._onPressed, this._onInit);
-
-  @override
-  _SettingsEditFABState createState() => _SettingsEditFABState(_checkIfInSelectionMode, _onPressed, _onInit);
-}
-
-class _SettingsEditFABState extends State<SettingsEditFAB> {
-  final Function _checkIfInSelectionMode;
-  final Function _onPressed;
-  final Function(Function) _onInit;
-
+class SettingsEditFAB extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    bool isInSelectionMode =_checkIfInSelectionMode();
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 100),
-      child: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            _onPressed();
-          });
-        },
-        child: isInSelectionMode
-            ? Icon(
-          Icons.delete_forever_rounded,
-          color: Colors.white,
-        )
-            : Icon(
-          Icons.edit,
-          color: Colors.white,
-        ),
-        backgroundColor:
-        isInSelectionMode ? Color(0xffEC64A5) : Color(0xff51C2A4),
-      ),
+    return BlocBuilder<SettingsEditCubit, SettingsEditState>(
+      builder: (BuildContext context, SettingsEditState state) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 100),
+          child: FloatingActionButton(
+            onPressed: () {
+              BlocProvider.of<SettingsEditCubit>(context).flipEditMode();
+            },
+            child: Icon(
+              Icons.edit,
+              color: Colors.white,
+            ),
+            backgroundColor:
+            state.isEditing ? Color(0xffEC64A5) : Color(0xff51C2A4),
+          ),
+        );
+      },
     );
-  }
-
-  _SettingsEditFABState(this._checkIfInSelectionMode, this._onPressed, this._onInit) {
-    _onInit(()=>setState((){}));
   }
 }
