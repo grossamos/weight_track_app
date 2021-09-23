@@ -7,8 +7,6 @@ import 'package:weight_track_app/models/exercise_instance.dart';
 
 import 'exercise_log_state.dart';
 
-// TODO: fix error, when attempting to add to empty day
-
 class ExerciseLoggingForm extends StatefulWidget {
   ExerciseLoggingForm();
 
@@ -41,7 +39,6 @@ class _ExerciseLoggingFormState extends State<ExerciseLoggingForm> {
                     "Logging",
                     style: TextStyle(color: Color(0xffBEBEBE), fontSize: 18.0),
                   ),
-                  // TODO add check to default to going with a future builder and getting the text yourself from Database for first build
                   BlocBuilder<ExerciseLogCubit, ExerciseLogState>(
                     builder: (BuildContext context, ExerciseLogState titleState) {
                       return Text(

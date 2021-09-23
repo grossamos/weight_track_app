@@ -10,7 +10,6 @@ class SettingsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO replace Width with expanded or something more agnostic
     return Container(
       width: MediaQuery.of(context).size.width * 0.42,
       height: 241.0,

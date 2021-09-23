@@ -14,19 +14,10 @@ import 'package:weight_track_app/models/exercise_instance.dart';
 import 'exercise_log_cubit.dart';
 import 'exercise_log_state.dart';
 
-// TODO make stateless
-class ExerciseListWidget extends StatefulWidget {
+class ExerciseListWidget extends StatelessWidget {
   final int _idOfDay;
 
   ExerciseListWidget(this._idOfDay);
-
-  @override
-  _ExerciseListWidgetState createState() => _ExerciseListWidgetState(_idOfDay);
-}
-
-class _ExerciseListWidgetState extends State<ExerciseListWidget> {
-  final int _idOfDay;
-  _ExerciseListWidgetState(this._idOfDay);
 
   @override
   Widget build(BuildContext context) {
@@ -95,8 +86,6 @@ class ExerciseListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO make AnimatedContainer work, to animate the expansion of a tile
-    // TODO possible fix is to move the AnimatedContainer up to the List as a whole
     return BlocBuilder<ExerciseLogCubit, ExerciseLogState>(
         // bloc: context.read<ExerciseLogCubit>(),
         builder: (BuildContext context, ExerciseLogState state) {
