@@ -5,8 +5,8 @@ import 'package:weight_track_app/components/home_page/exercise_log.dart';
 import 'package:weight_track_app/components/home_page/home_page.dart';
 import 'package:weight_track_app/components/main_page/main_content_pane.dart';
 import 'package:weight_track_app/components/settings_page/settings_data.dart';
-import 'package:weight_track_app/components/settings_page/settings_day_edit.dart';
 import 'package:weight_track_app/components/settings_page/settings_exercise_edit.dart';
+import 'package:weight_track_app/components/settings_page/settins_day_edit.dart';
 import 'package:weight_track_app/navigation/settings_rout_constants.dart';
 import 'package:weight_track_app/components/settings_page/settings_page.dart';
 

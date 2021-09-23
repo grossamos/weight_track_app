@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weight_track_app/components/shared/info_text.dart';
 
 class AnalyticsPage extends StatelessWidget {
   @override
@@ -26,7 +27,7 @@ class AnalyticsPage extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Text('To be implemented...'),
+              child: InfoText('To be implemented...'),
             )
           ],
         ),

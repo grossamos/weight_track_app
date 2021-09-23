@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weight_track_app/components/home_page/home_helper.dart';
+import 'package:weight_track_app/components/shared/info_text.dart';
 import 'package:weight_track_app/components/shared/title_text.dart';
 import 'package:weight_track_app/components/shared/widget_util.dart';
 import 'package:weight_track_app/logic/storage/database_filtered_data.dart';
@@ -33,6 +34,8 @@ class _ExerciseDayOfSplitPageState extends State<ExerciseDayOfSplitPage> {
               builder: (BuildContext context, AsyncSnapshot<List<DayOfSplit>> snapshot){
                 if (snapshot.data == null)
                   return Container();
+                else if (snapshot.data.isEmpty)
+                  return InfoText('Much empty.\nPlease add your split in the settings.');
                 return Container(
                   child: Column(
                     children: listOfDayTiles(snapshot.data),

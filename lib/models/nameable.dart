@@ -1,0 +1,3 @@
+class Nameable {
+  String name;
+}

@@ -28,7 +28,7 @@ class _SettingsDataDeleteState extends State<SettingsDataDelete> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        FlatButton(
+                        TextButton(
                             onPressed: () {
                               showDialog(
                                 context: context,

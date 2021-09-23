@@ -72,7 +72,7 @@ class _MainContentPaneState extends State<MainContentPane> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  FlatButton(onPressed: () => setState((){}), child: Text('Get Started', style: TextStyle(
+                  TextButton(onPressed: () => setState((){}), child: Text('Get Started', style: TextStyle(
                     fontFamily: 'Raleway',
                     fontSize: 18,
                     color: Color(0xff4A664A),

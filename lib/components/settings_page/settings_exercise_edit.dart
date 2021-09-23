@@ -30,7 +30,7 @@ class SettingsExerciseEdit extends StatelessWidget {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: List.generate(daysSnapshot.data.length,
-                                    (indexOfDay) => SettingsExerciseOfDayEdit(daysSnapshot.data[indexOfDay])),
+                                (indexOfDay) => SettingsExerciseOfDayEdit(daysSnapshot.data[indexOfDay])),
                           );
                         }))
               ],
@@ -46,7 +46,6 @@ class SettingsExerciseOfDayEdit extends StatelessWidget {
   final DayOfSplit _day;
 
   SettingsExerciseOfDayEdit(this._day);
-
 
   @override
   Widget build(BuildContext context) {
@@ -67,36 +66,30 @@ class SettingsExerciseOfDayEdit extends StatelessWidget {
                   Icons.add,
                   color: Color(0xff929292),
                 ),
-                onPressed: BlocProvider
-                    .of<SettingsEditCubit>(context)
-                    .flipEditMode)
+                onPressed: () {
+                  BlocProvider.of<SettingsEditCubit>(context).enterNewAddingMode(_day.id);
+                })
           ],
         ),
       ),
-      FutureBuilder(
-          future: DatabaseDataUnfiltered.getExercisesOfDay(_day.id),
-          builder: (BuildContext exerciseContext, AsyncSnapshot<List<Exercise>> exerciseSnapshot) {
-            if (exerciseSnapshot.data == null) return Container();
-            return BlocBuilder<SettingsEditCubit, SettingsEditState>(
-              bloc: BlocProvider.of<SettingsEditCubit>(context),
-              builder: (BuildContext context, SettingsEditState state) {
+      BlocBuilder<SettingsEditCubit, SettingsEditState>(
+        builder: (BuildContext context, SettingsEditState state) {
+          return FutureBuilder(
+              future: DatabaseDataUnfiltered.getExercisesOfDay(_day.id),
+              builder: (BuildContext exerciseContext, AsyncSnapshot<List<Exercise>> exerciseSnapshot) {
+                if (exerciseSnapshot.data == null) return Container();
                 return Column(
-                  children: List.generate(
-                      exerciseSnapshot.data.length,
-                          (int exerciseIndex) => SettingsExerciseEditChip(exerciseSnapshot.data[exerciseIndex].name, state.isEditing)),
+                  children: List<SettingsEditChip>.generate(
+                          exerciseSnapshot.data.length,
+                          (int exerciseIndex) => SettingsExerciseEditChip(
+                              context, exerciseSnapshot.data[exerciseIndex], state.isEditing)) +
+                      (state.isAddingExercise && state.idOfDayBeingEdited == _day.id
+                          ? [SettingsAddChip(context, true)]
+                          : []),
                 );
-              },
-            );
-          })
+              });
+        },
+      )
     ]);
-    //   ),
-    //   _isAddingAnExercise
-    //       ? SettingsAddingDialogue('Enter new Exercise', (String newExerciseName) {
-    //           DatabaseDataUnfiltered.addExercise(_day.id, Exercise(name: newExerciseName, exerciseSessions: []));
-    //           _exitAddingDialogue();
-    //           Fluttertoast.showToast(msg: "Saving...");
-    //         })
-    //       : Container(),
-    // ]);
   }
 }

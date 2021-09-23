@@ -12,9 +12,10 @@ class DatabaseDataUnfiltered{
     Database db = await DatabaseHelper.instance.database;
     int id = await db.insert('daysOfSplit',
         {'name': dayOfSplit.name});
-    for (Exercise exercise in dayOfSplit.exercisesOfSplitDay){
-      await addExercise(id, exercise);
-    }
+    if (dayOfSplit.exercisesOfSplitDay != null)
+      for (Exercise exercise in dayOfSplit.exercisesOfSplitDay){
+        await addExercise(id, exercise);
+      }
     return id;
   }
 
@@ -48,10 +49,10 @@ class DatabaseDataUnfiltered{
     Database db = await DatabaseHelper.instance.database;
     int id = await db.insert('exercises',
         {'idOfDay': idOfDay, 'name': exercise.name});
-    if (exercise.exerciseSessions.length > 0)
-    for (ExerciseSession exerciseSession in exercise.exerciseSessions){
-      await addExerciseSession(id, exerciseSession);
-    }
+    if (exercise.exerciseSessions != null && exercise.exerciseSessions.length > 0)
+      for (ExerciseSession exerciseSession in exercise.exerciseSessions){
+        await addExerciseSession(id, exerciseSession);
+      }
     return id;
   }
   

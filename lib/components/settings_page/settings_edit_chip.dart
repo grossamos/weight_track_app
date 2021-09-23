@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weight_track_app/components/settings_page/settings_exercise_edit_state.dart';
+import 'package:weight_track_app/logic/storage/database_unfiltered_data.dart';
+import 'package:weight_track_app/models/day_of_split.dart';
+import 'package:weight_track_app/models/exercise.dart';
+import 'package:weight_track_app/models/nameable.dart';
 
 abstract class SettingsEditChip extends StatelessWidget {
   Widget getMainIcon();
@@ -28,132 +34,113 @@ abstract class SettingsEditChip extends StatelessWidget {
   }
 }
 
-class SettingsExerciseEditChip extends SettingsEditChip {
-  final String exerciseName;
+abstract class SettingsGeneralEditChip<T extends Nameable> extends SettingsEditChip {
   final bool isBeingEdited;
+  final T chipModel;
+  final BuildContext context;
 
-  SettingsExerciseEditChip(this.exerciseName, this.isBeingEdited);
-  SettingsExerciseEditChip._empty()
-      : exerciseName = '',
-        isBeingEdited = false;
+  SettingsGeneralEditChip(this.context, this.chipModel, this.isBeingEdited);
 
+  void onDelete();
+  
   @override
   Widget getDeleteIcon() => TextButton(
-        onPressed: () {},
-        style: ButtonStyle(
-          overlayColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) => Color(0x4F939393)),
-        ),
-        child: isBeingEdited
-            ? Icon(
-                Icons.remove_circle_outline_outlined,
-                color: Color(0xffEC64A5),
-              )
-            : Container(),
-      );
+    onPressed: () {
+      onDelete();
+    },
+    style: ButtonStyle(
+      overlayColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) => Color(0x4F939393)),
+    ),
+    child: isBeingEdited
+        ? Icon(
+      Icons.remove_circle_outline_outlined,
+      color: Color(0xffEC64A5),
+    )
+        : Container(),
+  );
 
   @override
   Widget getMainIcon() => Icon(
-        Icons.check,
-        color: Color(0xff51C2A4),
-      );
+    Icons.check,
+    color: Color(0xff51C2A4),
+  );
 
   @override
   Widget getContent() => Text(
-        exerciseName,
-        style: TextStyle(fontSize: 18, fontFamily: 'Raleway'),
-      );
+    chipModel.name,
+    style: TextStyle(fontSize: 18, fontFamily: 'Raleway'),
+  );
 }
 
-class SettingsExerciseAddChip extends SettingsExerciseEditChip {
-  SettingsExerciseAddChip() : super._empty();
+class SettingsExerciseEditChip extends SettingsGeneralEditChip<Exercise> {
+  SettingsExerciseEditChip(BuildContext context, Exercise exercise, bool isBeingEdited) : super(context, exercise, isBeingEdited);
 
   @override
-  Icon getMainIcon() => Icon(
-        Icons.check,
-        color: Color(0xffC9C9C9),
-      );
-
-  @override
-  Widget getContent() => Text(
-        exerciseName,
-        style: TextStyle(
-          color: Color(0xffC9C9C9),
-          fontSize: 18,
-          fontFamily: 'Raleway',
-        ),
-      );
+  void onDelete() {
+    DatabaseDataUnfiltered.deleteExercise(chipModel).then((value) {
+      BlocProvider.of<SettingsEditCubit>(context).changeSeed();
+    });
+  }
+  
 }
 
-class OLDSettingsEditChip extends StatefulWidget {
-  final String _title;
-  final Function _onLongPress;
-  final Function _onPressed;
-  final Function _checkIfSelected;
-  final Function _checkIfInSelectionMode;
-  final Function(Function) _onIndicateSelection;
-
-  OLDSettingsEditChip(this._title, this._onLongPress, this._onPressed, this._checkIfSelected, this._onIndicateSelection,
-      this._checkIfInSelectionMode);
+class SettingsDayEditChip extends SettingsGeneralEditChip<DayOfSplit> {
+  SettingsDayEditChip(BuildContext context, DayOfSplit day, bool isBeingEdited) : super(context, day, isBeingEdited);
 
   @override
-  _OLDSettingsEditChipState createState() => _OLDSettingsEditChipState(
-      _title, _onLongPress, _onPressed, _checkIfSelected, _onIndicateSelection, _checkIfInSelectionMode);
-}
-
-class _OLDSettingsEditChipState extends State<OLDSettingsEditChip> {
-  final String _title;
-  final Function _onLongPress;
-  final Function _onPressed;
-  final Function _checkIfSelected;
-  final Function _checkIfInSelectionMode;
-  final Function(Function) _onIndicateSelection;
-
-  _OLDSettingsEditChipState(this._title, this._onLongPress, this._onPressed, this._checkIfSelected,
-      this._onIndicateSelection, this._checkIfInSelectionMode);
-
-  void _indicateSelection() {
-    setState(() {
-      _onIndicateSelection(() => setState(() {}));
+  void onDelete() {
+    DatabaseDataUnfiltered.deleteDay(chipModel).then((value) {
+      BlocProvider.of<SettingsEditCubit>(context).changeSeed();
     });
   }
 
+}
+
+class SettingsAddChip extends SettingsEditChip {
+  final BuildContext context;
+  final bool autofocusEnabled;
+
+  SettingsAddChip(this.context, this.autofocusEnabled);
+
   @override
-  Widget build(BuildContext context) {
-    bool _isSelected = _checkIfSelected();
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 7),
-      child: GestureDetector(
-        onLongPress: () {
-          _onLongPress();
-          _indicateSelection();
-        },
-        child: ActionChip(
-          onPressed: () {
-            if (_checkIfInSelectionMode()) {
-              _onPressed();
-              _indicateSelection();
-            }
-          },
-          backgroundColor: _isSelected ? Color(0xffEC64A5) : Color(0xffF3F3F3),
-          label: Text(
-            _title,
-            style: TextStyle(
-              color: _isSelected ? Colors.white : Color(0xff6B6B6B),
-              fontSize: 18.0,
-            ),
-          ),
-          labelPadding: EdgeInsets.only(top: 10, right: 15, bottom: 9),
-          avatar: _isSelected
-              ? Icon(
-                  Icons.delete_forever_rounded,
-                  color: Colors.white,
-                )
-              : Icon(
-                  Icons.check,
-                  color: Color(0xff51C2A4),
-                ),
-        ),
+  Icon getMainIcon() => Icon(
+    Icons.check,
+    color: Color(0xffC9C9C9),
+  );
+
+  @override
+  Widget getContent() => Padding(
+    padding: const EdgeInsets.symmetric(vertical: 15),
+    child: TextField(
+      autofocus: autofocusEnabled,
+      controller: new TextEditingController(),
+      textInputAction: TextInputAction.done,
+      onSubmitted: (String _) {
+        BlocProvider.of<SettingsEditCubit>(context).exitNewAddingMode();
+      },
+      onChanged: (String tmpExerciseName) {
+        SettingsAddStateSingleton.name = tmpExerciseName;
+      },
+      style: TextStyle(
+        fontSize: 18,
+        fontFamily: 'Raleway',
       ),
-    );
+      decoration: InputDecoration(
+          isDense: true,
+          contentPadding: EdgeInsets.zero,
+          hintText: 'Enter Name Here',
+          border: InputBorder.none,
+          hintStyle: TextStyle(
+            color: Color(0xffC9C9C9),
+            fontSize: 18,
+            fontFamily: 'Raleway',
+          )
+      ),
+    ),
+  );
+
+  @override
+  Widget getDeleteIcon() {
+    return Container();
   }
 }

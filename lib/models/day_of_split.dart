@@ -1,6 +1,7 @@
 import 'package:weight_track_app/models/exercise.dart';
+import 'package:weight_track_app/models/nameable.dart';
 
-class DayOfSplit{
+class DayOfSplit implements Nameable{
   int id;
   List<Exercise> exercisesOfSplitDay;
   String name;

@@ -10,7 +10,8 @@ class InfoText extends StatelessWidget {
     return Text(text, style: TextStyle(
       fontFamily: 'Raleway',
       fontSize: 24,
-      color: Color(0xff737373)
-    ),);
+      color: Color(0xff737373),
+    ), textAlign: TextAlign.center,
+    );
   }
 }
