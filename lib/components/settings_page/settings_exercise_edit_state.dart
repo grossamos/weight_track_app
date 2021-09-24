@@ -42,6 +42,7 @@ class SettingsAddStateSingleton {
   static void saveStateDay() {
     if (name != '') {
       DatabaseDataUnfiltered.addDayOfSplit(new DayOfSplit(name: name));
+      name = '';
     }
   }
 }

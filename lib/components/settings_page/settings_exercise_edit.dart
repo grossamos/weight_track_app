@@ -4,6 +4,7 @@ import 'package:weight_track_app/components/settings_page/settings_edit_chip.dar
 import 'package:weight_track_app/components/settings_page/settings_edit_fab.dart';
 import 'package:weight_track_app/components/settings_page/settings_exercise_edit_state.dart';
 import 'package:weight_track_app/components/settings_page/settings_title.dart';
+import 'package:weight_track_app/components/shared/info_text.dart';
 import 'package:weight_track_app/logic/storage/database_unfiltered_data.dart';
 import 'package:weight_track_app/models/day_of_split.dart';
 import 'package:weight_track_app/models/exercise.dart';
@@ -27,6 +28,10 @@ class SettingsExerciseEdit extends StatelessWidget {
                         future: DatabaseDataUnfiltered.getEmptyDaysOfSplit(),
                         builder: (BuildContext daysContext, AsyncSnapshot<List<DayOfSplit>> daysSnapshot) {
                           if (daysSnapshot.data == null) return Container();
+                          if (daysSnapshot.data.isEmpty) return Padding(
+                            padding: const EdgeInsets.only(top: 40),
+                            child: InfoText('Please add a training split in order to add exercises.', noCenter: true,),
+                          );
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: List.generate(daysSnapshot.data.length,
