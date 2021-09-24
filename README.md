@@ -9,17 +9,12 @@ This app can track what you lifted over time and give smart predictions on what 
 Weight Track App can help you predict and select the correct weight for every set of every exercise, allowing you to make more gains in the same amount of time.
 
 ## Build Process
-**Note: this was allmost directly copied from the [flutter documentation](https://flutter.dev/docs/deployment/android)**
+*Note: this was allmost directly copied from the [flutter documentation](https://flutter.dev/docs/deployment/android)*
 
 ### Generate Android App Bundle
 First generate a key to sign the app with (remember the password you enter in stdin):
 ```bash
 keytool -genkey -v -keystore ~/upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
-```
-
-Now generate the app bundle with:
-```bash
-flutter build appbundle
 ```
 
 Then create ``./android/key.properties`` containing the following code:
@@ -28,6 +23,11 @@ storePassword=<password from previous step>
 keyPassword=<password from previous step>
 keyAlias=upload
 storeFile=<location of the key store file, such as /Users/<user name>/upload-keystore.jks>
+```
+
+Now generate the app bundle with:
+```bash
+flutter build appbundle
 ```
 
 ### Generate APK
