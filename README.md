@@ -1,33 +1,37 @@
-# weight_track_app
+# Weight Track App
 
 ## Description
-The weight track app, now written in flutter. This app can track what you lifted over time and give smart predictions on what your next weight should be.
+Weight Track App, called `Statistical Progressive Overload` on the Play Store, is as the name implies and app that can track the weights you use in the gym.
+Traditionally, a prediction of what weight to use in your next set exclusively involves guesswork and some amount of experience.
+This often leads to miscalculations and "wasted" stets, making workout less efficient.
 
-This project has how been published to google play. Ever since there have been many more bugs discovered, so yeah use with caution...
+This app can track what you lifted over time and give smart predictions on what your next weight should be, thus making your time spent in the gym a lot more efficient.
+Weight Track App can help you predict and select the correct weight for every set of every exercise, allowing you to make more gains in the same amount of time.
 
-<a _ngcontent-pfu-c7="" href="https://play.google.com/store/apps/details?id=com.amosgross.weight_track_app&amp;pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"><img _ngcontent-pfu-c7="" alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" class="google_play_badge"></a>
+## Build Process
+**Note: this was allmost directly copied from the [flutter documentation](https://flutter.dev/docs/deployment/android)**
 
-## Models
-- Organisation in:
-    - DayOfSplit
-    - Exercise
-    - ExerciseSession
-    - ExerciseInstance
-- DayOfSplit:
-    - Is representative of a day (like Push, Pull or Legs) in your split
-    - Contains exercises you would do on that day (and ways to remove and add them, in the case that you use a new training plan)
-- Exercise
-    - Is representative of an Exercise you would do (like Squats or Bench)
-    - Stores all Instances of you doing that exercise (and ways to edit that)
-- ExerciseSession
-    - Is representative of the portion of a workout where you would do that exercise
-    - Idea is to shield off poor sets, and only take best set of a workout into account for future calculations
-- ExerciseInstance
-    - Is representative of one time you did a certain exercise
-    - Contains reps and weights, that need to be stored
+### Generate Android App Bundle
+First generate a key to sign the app with (remember the password you enter in stdin):
+```bash
+keytool -genkey -v -keystore ~/upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
+```
 
-## Routing
-- Navigation in the app uses the Navigator class (from flutter)
-- Is implemented in ``pages.main_content_pane.dart`` as a Navigatior under the main Scaffold containing the BottomNavigationBar
-- To use Navigation in the app, visit the ``routes.route_constants.dart`` file to add new routes, or to find the navigation key (or keys, depending later implementation)
+Now generate the app bundle with:
+```bash
+flutter build appbundle
+```
 
+Then create ``./android/key.properties`` containing the following code:
+```properties
+storePassword=<password from previous step>
+keyPassword=<password from previous step>
+keyAlias=upload
+storeFile=<location of the key store file, such as /Users/<user name>/upload-keystore.jks>
+```
+
+### Generate APK
+Now download `bundletool` from [here]() and execute the following to generate the apk:
+```bash
+java -jar ~/Downloads/bundletool-all-1.8.0.jar build-apks --bundle=build/app/outputs/bundle/release/app-release.aab --output=build/weight-track-app.apks
+```
