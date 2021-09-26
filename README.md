@@ -1,5 +1,9 @@
 # Weight Track App
 
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
+alt="Download from Google Play"
+height="80">](https://play.google.com/store/apps/details?id=com.amosgross.weight_track_app)
+
 ## Description
 Weight Track App, called `Statistical Progressive Overload` on the Play Store, is as the name implies and app that can track the weights you use in the gym.
 Traditionally, a prediction of what weight to use in your next set exclusively involves guesswork and some amount of experience.
