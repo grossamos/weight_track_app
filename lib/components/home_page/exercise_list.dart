@@ -87,7 +87,6 @@ class ExerciseListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ExerciseLogCubit, ExerciseLogState>(
-        // bloc: context.read<ExerciseLogCubit>(),
         builder: (BuildContext context, ExerciseLogState state) {
       bool _selected = state.selectedIndex == _indexOfItem;
       TextStyle _subtitleStyle = TextStyle(
