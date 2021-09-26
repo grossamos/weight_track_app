@@ -32,7 +32,7 @@ class _SettingsDataDeleteState extends State<SettingsDataDelete> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            SettingsSmartLoggingChip(invertSmartLogging, AppSettings.smartLoggingIsEnabled),
+                            // SettingsSmartLoggingChip(invertSmartLogging, AppSettings.smartLoggingIsEnabled),
                             SettingsDeleteEverythingChip(context)
                           ],
                         );
