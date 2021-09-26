@@ -31,7 +31,7 @@ flutter build appbundle
 ```
 
 ### Generate APK
-Now download `bundletool` from [here]() and execute the following to generate the apk:
+Now download `bundletool` from [here](https://github.com/google/bundletool/releases) and execute the following to generate the apk:
 ```bash
 java -jar ~/Downloads/bundletool-all-1.8.0.jar build-apks --bundle=build/app/outputs/bundle/release/app-release.aab --output=build/weight-track-app.apks
 ```
