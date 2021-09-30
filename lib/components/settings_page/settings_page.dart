@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:weight_track_app/components/settings_page/settings_tile.dart';
 import 'package:weight_track_app/navigation/main_route_constants.dart';
 
@@ -41,7 +40,7 @@ class SettingsPage extends StatelessWidget {
                   children: [
                     SettingsTile(Icons.folder_open_rounded, 'Data', (){mainNavigatorKey.currentState.pushNamed('/settings/data');}),
                     SizedBox(height: 22),
-                    SettingsTile(Icons.info_rounded, 'About', (){Fluttertoast.showToast(msg: 'App made by Ultraman');})
+                    SettingsTile(Icons.info_rounded, 'About', (){mainNavigatorKey.currentState.pushNamed('/settings/about');})
                   ],
                 )
               ],

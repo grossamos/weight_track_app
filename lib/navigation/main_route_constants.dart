@@ -4,10 +4,11 @@ import 'package:weight_track_app/components/analytics_page/analytics_page.dart';
 import 'package:weight_track_app/components/home_page/exercise_log.dart';
 import 'package:weight_track_app/components/home_page/home_page.dart';
 import 'package:weight_track_app/components/main_page/main_content_pane.dart';
+import 'package:weight_track_app/components/settings_page/settings_about.dart';
 import 'package:weight_track_app/components/settings_page/settings_data.dart';
 import 'package:weight_track_app/components/settings_page/settings_exercise_edit.dart';
 import 'package:weight_track_app/components/settings_page/settins_day_edit.dart';
-import 'package:weight_track_app/navigation/settings_rout_constants.dart';
+import 'package:weight_track_app/navigation/settings_route_constants.dart';
 import 'package:weight_track_app/components/settings_page/settings_page.dart';
 
 import 'home_route_constants.dart';
@@ -37,11 +38,14 @@ Route<dynamic> mainNavigatorRoutes(RouteSettings settings){
   } else if (settings.name == settingsNavigationRoutesAsList[0]){
     builder = (BuildContext context) => SettingsExerciseEdit();
     historyOfNavBar.add(2);
-  }else if (settings.name == settingsNavigationRoutesAsList[1]){
+  } else if (settings.name == settingsNavigationRoutesAsList[1]){
     builder = (BuildContext context) => SettingsDayEdit();
     historyOfNavBar.add(2);
-  }else if (settings.name == settingsNavigationRoutesAsList[2]){
+  } else if (settings.name == settingsNavigationRoutesAsList[2]){
     builder = (BuildContext context) => SettingsDataDelete();
+    historyOfNavBar.add(2);
+  } else if (settings.name == settingsNavigationRoutesAsList[3]){
+    builder = (BuildContext context) => SettingsAboutPage();
     historyOfNavBar.add(2);
   }
   else {
