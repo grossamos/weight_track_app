@@ -30,5 +30,4 @@ flutter:
     - family: Raleway
       fonts:
         - asset: assets/fonts/Raleway-Regular.ttf
-  assets:
-    - assets/welcome.svg
+  
