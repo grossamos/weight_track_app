@@ -1,6 +1,6 @@
 name: weight_track_app
 description: The weight track app, now written in flutter
-version: 1.1.0+2
+version: 1.2.0+3
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
