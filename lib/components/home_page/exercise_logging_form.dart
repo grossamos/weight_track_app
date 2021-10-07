@@ -11,8 +11,7 @@ class ExerciseLoggingForm extends StatefulWidget {
   ExerciseLoggingForm();
 
   @override
-  _ExerciseLoggingFormState createState() =>
-      _ExerciseLoggingFormState();
+  _ExerciseLoggingFormState createState() => _ExerciseLoggingFormState();
 }
 
 class _ExerciseLoggingFormState extends State<ExerciseLoggingForm> {
@@ -26,8 +25,7 @@ class _ExerciseLoggingFormState extends State<ExerciseLoggingForm> {
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: Container(
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-            color: Color(0xffEFFDF1), borderRadius: BorderRadius.circular(18)),
+        decoration: BoxDecoration(color: Color(0xffEFFDF1), borderRadius: BorderRadius.circular(18)),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 22),
           child: Form(
@@ -41,32 +39,36 @@ class _ExerciseLoggingFormState extends State<ExerciseLoggingForm> {
                   ),
                   BlocBuilder<ExerciseLogCubit, ExerciseLogState>(
                     builder: (BuildContext context, ExerciseLogState titleState) {
-                      return Text(
-                        "Enter your last set of " + titleState.selectedExercise.name,
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'Raleway',
-                            fontSize: 24.0),
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Enter your last set of:\n" + titleState.selectedExercise.name,
+                            style: TextStyle(color: Colors.black, fontFamily: 'Raleway', fontSize: 24.0),
+                          ),
+                          TextButton(
+                            child: Icon(Icons.check, color: Color(0xff757575), size: 32.0),
+                            style: ButtonStyle(
+                                visualDensity: VisualDensity(horizontal: -4, vertical: -4)
+                              ),
+                            onPressed: () {
+                              finalizeData();
+                            },
+                          ),
+                        ],
                       );
                     },
                   ),
                   SizedBox(
                     height: 35,
                   ),
-                  ExerciseLoggingFormField(
-                      loggingOnSaveWeights, 'Weight', 205),
+                  ExerciseLoggingFormField(loggingOnSaveWeights, 'Weight', 240),
                   SizedBox(
                     height: 17,
                   ),
-                  ExerciseLoggingFormField(
-                      loggingOnSaveReps, 'Rep Count', 285),
-                  SizedBox(
-                    height: 17,
-                  ),
-                  // TODO default to one set
-                  ExerciseLoggingFormField(
-                    loggingOnSaveSets, 'Set Count', 335, isLastField: true, finalizeData: finalizeData,
-                  ),
+                  ExerciseLoggingFormField(loggingOnSaveReps, 'Rep Count', 335,
+                      isLastField: true, finalizeData: finalizeData),
                   SizedBox(
                     height: 20,
                   ),
@@ -79,7 +81,6 @@ class _ExerciseLoggingFormState extends State<ExerciseLoggingForm> {
 
   double _tmpWeight;
   int _tmpReps;
-  int _tmpSets;
 
   String loggingOnSaveWeights(String s) {
     _tmpWeight = double.parse(s);
@@ -91,11 +92,6 @@ class _ExerciseLoggingFormState extends State<ExerciseLoggingForm> {
     return null;
   }
 
-  String loggingOnSaveSets(String s) {
-    _tmpSets = double.parse(s).round();
-    return null;
-  }
-
   void finalizeData() {
     FocusScope.of(context).unfocus();
     if (_formKey.currentState.validate()) {
@@ -104,11 +100,8 @@ class _ExerciseLoggingFormState extends State<ExerciseLoggingForm> {
 
       ExerciseLogCubit cubit = BlocProvider.of<ExerciseLogCubit>(context);
 
-      for (int i = 0; i < _tmpSets; i++) {
-        DatabaseDataFiltered.addExerciseInstance(
-            ExerciseInstance(reps: _tmpReps, weight: _tmpWeight),
-            cubit.state.selectedExercise.id);
-      }
+      DatabaseDataFiltered.addExerciseInstance(
+          ExerciseInstance(reps: _tmpReps, weight: _tmpWeight), cubit.state.selectedExercise.id);
     }
   }
 }
