@@ -4,6 +4,7 @@ version: 1.2.0+3
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
+  flutter: ^2.2.1
 
 dependencies:
   custom_navigator:
