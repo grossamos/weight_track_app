@@ -1,1 +1,1 @@
-final List<String> analyticsNavigationRoutesAsList = ['/analytics/ultra'];
+const List<String> analyticsNavigationRoutesAsList = ['/analytics/raw', '/analytics/analyzed'];

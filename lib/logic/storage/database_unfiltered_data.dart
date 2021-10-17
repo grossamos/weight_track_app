@@ -134,6 +134,27 @@ class DatabaseDataUnfiltered{
     });
   }
 
+  static Future<List<String>> getNameAndDayOfInstance(int instanceId) async{
+    Database db = await DatabaseHelper.instance.database;
+
+    List<Map<String, dynamic>> instanceMaps = await db.query('exerciseInstances', where: 'id = $instanceId', columns: ['idOfExerciseSession'], distinct: true);
+    int sessionId = instanceMaps[0]['idOfExerciseSession'];
+
+    List<Map<String, dynamic>> sessionMaps = await db.query('exerciseSessions', where: 'id = $sessionId', columns: ['idOfExercise'], distinct: true);
+    int exerciseId = sessionMaps[0]['idOfExercise'];
+
+    List<Map<String, dynamic>> exerciseMaps = await db.query('exercises', where: 'id = $exerciseId', columns: ['idOfDay', 'name'], distinct: true);
+    int dayId = exerciseMaps[0]['idOfDay'];
+    String exerciseName = exerciseMaps[0]['name'];
+
+
+    List<Map<String, dynamic>> dayMaps = await db.query('daysOfSplit', where: 'id = $dayId', columns: ['name'], distinct: true);
+    String dayName = dayMaps[0]['name'];
+
+
+    return [dayName, exerciseName];
+  }
+
 
 
   static Future<void> deleteDay(DayOfSplit dayOfSplit) async{

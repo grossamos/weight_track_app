@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weight_track_app/components/shared/info_text.dart';
+import 'package:weight_track_app/navigation/main_route_constants.dart';
 
 class AnalyticsPage extends StatelessWidget {
   @override
@@ -27,7 +27,14 @@ class AnalyticsPage extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: InfoText('To be implemented...'),
+              child: Column(
+                children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.2),
+                  AnalyticsOption(Icons.assignment_outlined, 'Your Raw Data', '/analytics/raw'),
+                  SizedBox(height: 25),
+                  AnalyticsOption(Icons.assessment_outlined, 'Your Analysed Data',  '/analytics/analyzed')
+                ]
+              ),
             )
           ],
         ),
@@ -35,3 +42,41 @@ class AnalyticsPage extends StatelessWidget {
     )));
   }
 }
+
+class AnalyticsOption extends StatelessWidget {
+
+  final IconData _iconData;
+  final String _navGoal;
+  final String _title;
+
+  static const _OPTION_COLOR = Color(0xff757575);
+
+
+  AnalyticsOption(this._iconData, this._title, this._navGoal);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(onPressed: () {
+      mainNavigatorKey.currentState.pushNamed(_navGoal);
+    }, child: Row(
+      children: [
+        Icon(
+          _iconData,
+          size: 50,
+          color: _OPTION_COLOR,
+        ),
+        SizedBox(width: 40,),
+        Text(
+          _title,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: _OPTION_COLOR,
+            fontFamily: 'Raleway',
+            fontSize: 24.0,
+          ),
+        )
+      ],
+    ));
+  }
+}
+
