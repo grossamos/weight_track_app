@@ -1,0 +1,40 @@
+AntiFeatures:
+  - HopeNot
+Categories:
+  - Sports & Health
+License: MIT
+AuthorName: Amos Groß
+AuthorEmail: email@amosgross.com
+AuthorWebSite: www.amosgross.com
+WebSite:
+SourceCode: https://github.com/grossamos/weight_track_app
+IssueTracker: https://github.com/grossamos/weight_track_app/issues
+Translation:
+Changelog:
+Donate:
+Bitcoin:
+
+AutoName: WeightTrackApp
+
+RepoType: git
+Repo: https://github.com/grossamos/weight_track_app
+
+Builds:
+  - versionName: 1.2.0
+    versionCode: 3
+    commit: v1.2.0+3
+    output: build/app/outputs/apk/fdroid/release/app-fdroid-release.apk
+    srclibs:
+      - flutter@2.2.3
+    rm:
+      - ios
+    build:
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+      - $$flutter$$/bin/flutter build apk --flavor fdroid
+
+AutoUpdateMode: Version %v
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.2.0
+CurrentVersionCode: 3
